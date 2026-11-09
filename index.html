@@ -1,69 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Coming Soon</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-        .container {
-            max-width: 600px;
-            padding: 40px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
-        }
-        h1 {
-            font-size: 2.5rem;
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.1rem;
-            color: #7f8c8d;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        .badge {
-            display: inline-block;
-            background-color: #3498db;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-        .footer {
-            margin-top: 40px;
-            font-size: 0.9rem;
-            color: #bdc3c7;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Readers vs Judges — Who decides what makes a book great?</title>
+<meta name="description" content="A digital humanities project comparing the Goodreads 'Best Books Ever' reader canon with major literary prizes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="#home">Readers <span>vs</span> Judges</a>
+    <nav aria-label="Sections">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#find" data-nav="find">Find a book</a>
+      <a href="#game" data-nav="game">Play</a>
+      <a href="#genres" data-nav="genres">Genres &amp; eras</a>
+      <a href="#map" data-nav="map">Map</a>
+      <a href="#judges" data-nav="judges">Readers vs judges</a>
+      <a href="#predict" data-nav="predict">Can a model spot a winner?</a>
+      <a href="#clusters" data-nav="clusters">Readers' own genres</a>
+      <a href="#method" data-nav="method">How we did it</a>
+    </nav>
+  </div>
+</header>
 
-    <div class="container">
-        <div class="badge">Under Construction</div>
-        <h1>Something Exciting is Coming</h1>
-        <p>We are working hard behind the scenes to bring you a brand new digital experience. Sign up or check back soon to see what we've been building!</p>
-        
-        <div class="footer">
-            &copy; 2026 Your Company Name. All rights reserved.
-        </div>
+<main id="main" class="wrap">
+
+<!-- ============================ HOME -->
+<section id="page-home" class="page">
+  <p class="kicker">A digital humanities project · Goodreads “Best Books Ever”</p>
+  <h1>Who decides what makes a book great?</h1>
+  <p class="lead">Millions of readers voted on Goodreads for the best books ever. Prize committees like the Booker and the Pulitzer make their own choices. We compared the two to find out whether readers and judges agree.</p>
+  <div class="stats" id="home-stats"></div>
+  <h2 class="section-h">What we found</h2>
+  <div class="cards3" id="home-findings"></div>
+  <div class="callout">
+    <strong>Try it yourself.</strong> <a href="#find">Look up a book you love</a> to see whether readers and judges agree about it, or <a href="#game">play Readers vs Judges</a>.
+  </div>
+</section>
+
+<!-- ============================ FIND -->
+<section id="page-find" class="page" hidden>
+  <h1>Where does your favourite book stand?</h1>
+  <p class="lead">Type a book or author. We'll show you how readers rate it compared with the rest of the canon, and what prize judges said.</p>
+  <form class="search" id="search-form" role="search">
+    <label for="q" class="sr">Search for a book or author</label>
+    <input id="q" type="search" placeholder="e.g. The Book Thief, Toni Morrison, Dune" autocomplete="off">
+  </form>
+  <div class="chips" id="find-chips"><span>Try:</span></div>
+  <ul class="results" id="find-results" aria-live="polite"></ul>
+  <div id="find-card"></div>
+</section>
+
+<!-- ============================ GAME -->
+<section id="page-game" class="page" hidden>
+  <div id="game-root"></div>
+</section>
+
+<!-- ============================ GENRES -->
+<section id="page-genres" class="page" hidden>
+  <h1>What's in the readers' canon?</h1>
+  <p class="lead" id="genres-lead"></p>
+  <div class="panel">
+    <h2>The most common genre tags</h2>
+    <p class="note">Share of the 905 canon books carrying each tag among their first six genre tags. Catch-all tags like “Fiction” are left out.</p>
+    <div id="chart-genres" class="chart"></div>
+  </div>
+  <div class="panel">
+    <h2>How the canon changes by era</h2>
+    <p class="note" id="era-note"></p>
+    <div id="chart-era" class="chart"></div>
+    <p class="takeaway" id="era-takeaway"></p>
+  </div>
+</section>
+
+<!-- ============================ MAP -->
+<section id="page-map" class="page" hidden>
+  <h1>Where are the canon's stories set?</h1>
+  <p class="lead" id="map-lead"></p>
+  <div class="toggle" role="group" aria-label="Which books">
+    <button type="button" class="tg on" data-set="canon">Canon (905 books)</button>
+    <button type="button" class="tg" data-set="all">All 51,000 books</button>
+  </div>
+  <div class="panel">
+    <div id="chart-map" class="chart map"></div>
+    <p class="note" id="map-status"></p>
+  </div>
+  <div class="panel">
+    <h2>Top settings</h2>
+    <div id="chart-countries" class="chart"></div>
+  </div>
+</section>
+
+<!-- ============================ JUDGES -->
+<section id="page-judges" class="page" hidden>
+  <h1>Do readers and prize judges agree?</h1>
+  <p class="lead" id="judges-lead"></p>
+  <div class="panel">
+    <h2>Reader ratings by award status</h2>
+    <p class="note">Each dot is one canon book. The thick line is the middle value (median). Hover or tap a dot to see the book.</p>
+    <div id="chart-groups" class="chart"></div>
+    <p class="takeaway" id="groups-takeaway"></p>
+  </div>
+  <div class="panel">
+    <h2>Being voted onto the list is not the same as being loved</h2>
+    <p class="note">Votes on the Best Books Ever list (log scale) against average rating. Orange dots are major-prize winners.</p>
+    <div id="chart-votes" class="chart"></div>
+    <p class="takeaway" id="votes-takeaway"></p>
+  </div>
+  <div class="panel">
+    <h2>A readers' prize vs the judges' prizes</h2>
+    <div id="choice-box" class="compare"></div>
+  </div>
+  <details class="how">
+    <summary>How do we know? (statistics)</summary>
+    <div id="judges-stats"></div>
+  </details>
+</section>
+
+<!-- ============================ PREDICT -->
+<section id="page-predict" class="page" hidden>
+  <h1>Can a computer spot a prize winner from reader data?</h1>
+  <p class="lead" id="predict-lead"></p>
+  <div class="panel">
+    <h2>How well did the models do?</h2>
+    <p class="note">F1 score from 0 (useless) to 1 (perfect), measured on 25% of books the models never saw. We use F1 because winners are rare: a model that always says “no prize” would be 99.4% accurate and still useless.</p>
+    <div id="model-table"></div>
+  </div>
+  <div class="panel two">
+    <div>
+      <h2>Best model: what it got right and wrong</h2>
+      <div id="confusion"></div>
     </div>
+    <div>
+      <h2>What the model relied on</h2>
+      <div id="chart-importance" class="chart"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <h2>Judges' genres vs readers' genres</h2>
+    <p class="note">How much more (or less) likely a prize winner is to carry each tag, compared with an average popular book.</p>
+    <div id="chart-lift" class="chart"></div>
+    <p class="takeaway" id="lift-takeaway"></p>
+  </div>
+</section>
 
+<!-- ============================ CLUSTERS -->
+<section id="page-clusters" class="page" hidden>
+  <h1>The genres readers make for themselves</h1>
+  <p class="lead" id="clusters-lead"></p>
+  <div class="panel">
+    <h2>Canon books grouped by their genre tags</h2>
+    <p class="note" id="clusters-note"></p>
+    <div id="chart-clusters" class="chart"></div>
+  </div>
+  <div class="cards3" id="cluster-cards"></div>
+</section>
+
+<!-- ============================ METHOD -->
+<section id="page-method" class="page" hidden>
+  <h1>How we did it</h1>
+  <div id="method-root"></div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Data: Casanova Lozano, L. &amp; Costa Planells, S. (2020). <em>Best Books Ever Dataset</em> (Goodreads, scraped November 2020). Zenodo, doi:10.5281/zenodo.4265096, licensed CC BY-NC 4.0. Prize lists: Wikipedia. Non-commercial student project for a Digital Humanities course.</p>
+  </div>
+</footer>
+
+<div id="tip" class="tip" role="tooltip" hidden></div>
+<script src="lib/d3.min.js"></script>
+<script src="data/data.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
